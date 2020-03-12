@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { constants } from '../data'
+import { constants } from '../../dataManger/data'
 const isabilityArray = constants.isabilityArray
 
 function IsabilitySelect({ isabilitySelectonClick }) {
@@ -12,9 +12,9 @@ function IsabilitySelect({ isabilitySelectonClick }) {
                 onClick={(e) => {
                     isabilitySelectonClick(e.target.value);
                 }}>
-                <option value="0" selected disabled>Choose...</option>
+                <option value="" selected >Choose...</option>
                 {isabilityArray.map(isability =>
-                    <option value={isability.id}>{isability.label}</option>
+                    <option value={isability.label}>{isability.label}</option>
                 )}
             </select>
         </>

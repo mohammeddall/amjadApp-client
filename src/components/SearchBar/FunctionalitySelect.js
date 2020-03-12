@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {constants} from '../data'
+import {constants} from '../../dataManger/data'
 const functionalityArray = constants.functionalityArray
 
 function FunctionalitySelect({ functionalityonClick}){
@@ -10,9 +10,9 @@ function FunctionalitySelect({ functionalityonClick}){
         <select className="custom-select my-1 mr-sm-2" id="functionalitySelect" onClick={(e)=>{
                 functionalityonClick(e.target.value);
         }}>
-            <option value="0" selected disabled>Choose...</option>
+            <option value="" selected >Choose...</option>
                 {functionalityArray.map(functionality=>
-                <option value={functionality.id}>{functionality.label}</option>
+                <option value={functionality.label}>{functionality.label}</option>
                 )}
         </select>
         </>

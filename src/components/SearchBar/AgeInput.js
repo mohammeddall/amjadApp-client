@@ -1,4 +1,4 @@
-import React , {useState} from 'react'
+import React, { useState, useEffect} from 'react'
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,11 +8,18 @@ function AgeInput({ageInputonClick}){
     const [startDate, setStartDate] = useState(new Date());
     const [age, setAge] = useState();
     const [clickedButton, setClickedButton]=useState('Age');
+    const dateCalc = date =>{
+        return Number((new Date().getTime() - date.getTime()) / (1000 * 60 * 60 * 24 * 365.25)).toFixed(2);
+    }
+    useEffect(() => {
+        ageInputonClick(age)
+    },[age] )
 
     return (
-        <div onClick={() => 
-        ageInputonClick(age)
-        }>
+        // <div onClick={() => 
+        // ageInputonClick(age)
+        // }>
+        <div>
         <Buttons onClickHandler={clickedButton => {setClickedButton( clickedButton )}}/>
         <div className="input-group">
             {clickedButton == 'Age' ?
@@ -24,8 +31,7 @@ function AgeInput({ageInputonClick}){
                     onChange={(e)=>{
                     setAge(e.target.value);
                     setStartDate(new Date()-e.target.value*1000*60*60*24*365.25);
-                    ageInputonClick(age)
-                    }} />
+                    }}/>
             </div>
             :
             <DatePicker
@@ -39,12 +45,9 @@ function AgeInput({ageInputonClick}){
                 showYearDropdown
                 dropdownMode="select"
                 onChange={date =>{
-                    if (date) {
-                    setAge(Number((new Date().getTime() - date.getTime()) / (1000 * 60 * 60 * 24*365.25)).toFixed(2))
-                }
-                setStartDate(date);
-                ageInputonClick(age)
-                    }} />
+                    if (date) setAge(dateCalc(date))
+                    setStartDate(date);
+                    }}/>
             }
         </div>
 
