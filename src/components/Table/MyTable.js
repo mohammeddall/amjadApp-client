@@ -1,5 +1,6 @@
 import React from "react";
 
+import PaginationBar from './PaginationBar.js'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 let indx = 0;
@@ -11,6 +12,10 @@ export default class MyTable extends React.Component {
   constructor(props) {
     super(props);
     this.sas = props;
+    this.state={
+      size:20,
+      page:1
+    }
     
     this.data={
         tableStyle:{ //for the <table>
@@ -18,11 +23,14 @@ export default class MyTable extends React.Component {
             className:''
         },
         tableHeader:[],//array of objects to show in hedaer [{value:patern_id , valueToShow:PatterID , style{} , sort:true}]
-        pagination:20, //local pagination
         tableData:{}
     }
 
   }
+  tableToShow=()=>
+    this.props.data.tableData.slice((this.state.page-1 )* this.props.data.pagination, (this.state.page) * this.props.data.pagination)
+
+  
   tableHeader=(header,isSort,headerValue)=> {
   return (
     <th scope="col"
@@ -71,7 +79,7 @@ return (
           </tr>
         </thead>
         <tbody>
-          {this.props.data.tableData.map(entries => (
+          {this.tableToShow(this.props.data.tableData).map(entries => (
             <tr style={{}} >
             {this.props.data.hasOwnProperty('tableHeader')?
               this.props.data.tableHeader.map(header=>
@@ -90,6 +98,12 @@ return (
           
         </tbody>
       </table>
+    {this.props.data.hasOwnProperty('pagination') &&
+      <PaginationBar 
+        activePage={this.state.page} 
+      totalPages={Math.ceil(this.props.data.tableData.length / this.props.data.pagination)}
+        onPageChange={(data)=>this.setState({page:data.activePage})}
+      />}
       </>
 );
 }
