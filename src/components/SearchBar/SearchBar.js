@@ -6,6 +6,8 @@ import IsabilitySelect from './IsabilitySelect';
 import Search from '../../dataManger/Search'
 import MyTable from '../Table/MyTable'
 
+import DataForTheDB from '../../dataManger/DataForTheDB'
+
 export default class SearchBar extends Component {
     constructor(props) {
         super(props);
@@ -22,6 +24,7 @@ export default class SearchBar extends Component {
     }
 
     componentDidMount = () => {
+        this.onSearch();
     }
 
     detailsUpdate =(key,value) =>{
@@ -29,22 +32,29 @@ export default class SearchBar extends Component {
         this.details[key]=value;
     }
     onSearch =()=>{
-        console.log('details', this.details)
-        // let newTableData = constants.services.filter(service=>
-        //    service.fromAge < this.details.age && 
-        //    service.toAge > this.details.age 
 
-        // )
-        // newTableData.map(serv=>{
-        //     serv.functionality = serv.functionality.map(functionality => functionality.value).join(' / ');
-        //     serv.isability = serv.isability.map(isability => isability.value).join(' / ');
-        //     return serv
-        // })
         let newTableData=Search(this.details)
         this.setState({ tableData: newTableData,totalServices:newTableData.length})
         console.log('tableData', newTableData,this.state.tableData)
-        // this.setState({tableData:[{id:222,name:"asdasdxzlolll"}]})
     }
+    dataToTable = () => ({
+        tableData: this.state.tableData,
+        tableHeader: [
+            { value: 'index', valueToShow: 'ID', style: {width: '5%'}, sort: true },
+            { value: 'name', valueToShow: 'Name', style: { width: '10%'}, sort: true },
+            { value: 'fromAge', valueToShow: 'F ', style: { width: '5%'}, sort: true },
+            { value: 'toAge', valueToShow: 'T ', style: { width: '5%'}, sort: true },
+            { value: 'functionality', valueToShow: 'Functionality', style: { width: '15%'}, sort: true },
+            { value: 'isability', valueToShow: 'Isability', style: { width: '15%'}, sort: true },
+            { value: 'description', valueToShow: 'Description', style: {}, sort: true }
+        ],
+        tableStyle: {
+        style: { borderWidth: "3px", width: '100%' },
+        className: "table table-striped table-hover table-bordered border-dark",
+        localSort:true
+        },
+        pagination:10
+    })
 
 
     render() {
@@ -70,17 +80,15 @@ export default class SearchBar extends Component {
                     </div>
 
                 </div>
+                <div className="row">
+                    {DataForTheDB()}
+                </div>
                 <div className="row justify-content-md-center mt-3">
                     <div className="col-lg-auto col-sm-12">
-                    <MyTable data={{ 
-                        tableData: this.state.tableData, 
-                        tableStyle: { 
-                            style:{ borderWidth: "3px", width: '100%' },
-                            className:"table table-striped table-hover table-bordered border-dark"
-                        }
-                        }} sortOn={()=>console.log('sort clicked')}/>
+                        <MyTable data={this.dataToTable()} sortOn={()=>console.log('sort')}/>
                     </div>
                 </div>
+
             </div>
 
         )
