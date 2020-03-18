@@ -1,18 +1,20 @@
 import React from 'react';
 import { Pagination } from 'semantic-ui-react'
 
-const PaginationBar = (props) => (
-    <div className="container my-2">
-        <div className="row justify-content-center">
-            <div className="col-6">
-                <Pagination 
-                    defaultActivePage={props.activePage} 
-                    totalPages={props.totalPages}
-                    onPageChange={(e, data) => props.onPageChange(data)}
-                />
+const PaginationBar = ({ activePage, totalPages, onPageChange }) => {
+    return (
+        <div className="container my-2">
+            <div className="row justify-content-center">
+                <div className="col-6">
+                    <Pagination
+                        activePage={activePage}
+                        totalPages={totalPages}
+                        onPageChange={(e, data) => onPageChange(data.activePage)}
+                    />
+                </div>
             </div>
         </div>
-    </div>
-)
+    )
+}
 
 export default PaginationBar

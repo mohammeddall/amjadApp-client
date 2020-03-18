@@ -7,14 +7,14 @@ let indx = 0;
 const capitalizeFirstLetter = str => str.replace(/^\w/, function (chr) {return chr.toUpperCase();});
 
 
-
-export default class MyTable extends React.Component {
+class MyTable extends React.Component {
   constructor(props) {
     super(props);
-    this.sas = props;
     this.state={
       size:20,
-      page:1
+      page:1,
+      sorteBy:'',
+      orderBy:''
     }
     
     this.data={
@@ -27,10 +27,18 @@ export default class MyTable extends React.Component {
     }
 
   }
-  tableToShow=()=>
+  componentDidUpdate(prevProps) {
+    if (prevProps.data.tableData !== this.props.data.tableData) {
+      console.log('props changed')
+      this.setState({page:1})
+    }
+  }
+  tableToShow=()=>(
+    this.props.data.hasOwnProperty('pagination')?
     this.props.data.tableData.slice((this.state.page-1 )* this.props.data.pagination, (this.state.page) * this.props.data.pagination)
-
-  
+    :
+    this.props.data.tableData
+  )
   tableHeader=(header,isSort,headerValue)=> {
   return (
     <th scope="col"
@@ -46,6 +54,10 @@ export default class MyTable extends React.Component {
     }
     </th>
   );
+  }
+
+  sortData = (filter, order )=>{
+
   }
   render() {
 return (
@@ -100,11 +112,14 @@ return (
       </table>
     {this.props.data.hasOwnProperty('pagination') &&
       <PaginationBar 
-        activePage={this.state.page} 
+      activePage={this.state.page}
       totalPages={Math.ceil(this.props.data.tableData.length / this.props.data.pagination)}
-        onPageChange={(data)=>this.setState({page:data.activePage})}
+      onPageChange={(data) => this.setState({ page: data })}
       />}
       </>
 );
 }
 }
+
+
+export default MyTable
