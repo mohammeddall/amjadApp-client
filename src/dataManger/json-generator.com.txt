@@ -1,0 +1,49 @@
+[
+  '{{repeat(5)}}',
+  {
+    index: '{{index()+1}}',
+	//name: '{{lorem(3, "word")}}',
+    name: function (tags) {
+      return 'service' + this.index ;
+    },
+    fromAge: '{{integer(0, 20)}}',
+    toAge: function (tags) {
+      return tags.integer(0, 10) + this.fromAge ;
+    },
+    functionality:[
+      '{{repeat(integer(1,3))}}',
+      {
+        id: '{{index()}}',
+        value: function (tags) {
+      var functionalityEnum = ['easy', 'medium', 'difficult','deep'];
+      var randd=tags.integer(0, functionalityEnum.length - 1);
+      var raandfunc=functionalityEnum[randd];
+      functionalityEnum.splice(randd,1);
+      return raandfunc;
+    },
+        label:function (tags) {
+      return this.value ;
+    }
+      }
+      
+    ],
+    isability:[
+      '{{repeat(integer(1,2))}}',
+      {
+        id: '{{index()}}',
+        value: function (tags) {
+      var isabilityEnum = ['autism', 'rehabilitation', 'moshe'];
+      var randd2=tags.integer(0, isabilityEnum.length - 1);
+      var raandfunc2=isabilityEnum[randd2];
+      isabilityEnum.splice(randd2,1);
+      return raandfunc2;
+    	},
+        label:function (tags) {
+      return this.value ;
+    }
+      }
+    ],
+    description: '{{lorem(20, "word")}}'
+
+  }
+]

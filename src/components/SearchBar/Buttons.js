@@ -1,33 +1,21 @@
-import React, { useState} from 'react'
+import React from 'react';
 
-
-function Buttons({ onClickHandler}){
+function Buttons({ clickedButton, onClickHandler }) {
     const buttonClickedStyle = { backgroundColor: '#6c757d', color: 'white', boxShadow: '0 0 0 0' };
-    const [ageButtonStyle, setAgeButtonStyle] = useState(buttonClickedStyle)
-    const [bdButtonStyle, setBdButtonStyle]=useState()
 
-
-    return(
-        // <div className="input-group-prepend">
+    return (
         <div>
             <button type="button" className="btn btn-outline-secondary"
-                style={ageButtonStyle}
-                onClick={(e)=>{
-                    setAgeButtonStyle(buttonClickedStyle);
-                    setBdButtonStyle({});
-                    onClickHandler(e.target.innerText);
-                }}
+                style={clickedButton == 'Age' ? buttonClickedStyle : null}
+                onClick={() => onClickHandler('clickedButton', 'Age')}
             >Age</button>
 
             <button type="button" className="btn btn-outline-secondary mr-2"
-                style={bdButtonStyle}
-                onClick={(e) => {
-                    setAgeButtonStyle({});
-                    setBdButtonStyle(buttonClickedStyle);
-                    onClickHandler(e.target.innerText);
-                }}
+                style={clickedButton == 'BD' ? buttonClickedStyle : null}
+                onClick={() => onClickHandler('clickedButton', 'BD')}
             >BD</button>
         </div>
     );
 }
+
 export default Buttons

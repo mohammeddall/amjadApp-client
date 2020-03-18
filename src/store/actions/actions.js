@@ -1,0 +1,7 @@
+export const SEARCH_DETAILS_CHANGE ='SEARCH_DETAILS_CHANGE'
+export const RESET ='RESET'
+
+
+// export const AGE_CHANGE ='AgeChange'
+// export const FUNCTIONALITY_CHANGE ='FUNCTIONALITY_CHANGE'
+// export const ISABILITY_CHANGE ='ISABILITY_CHANGE'
