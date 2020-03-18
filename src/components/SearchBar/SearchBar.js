@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import {connect} from 'react-redux'
-import { updateSearchDetails, resetSearchDetails } from '../../store/actions/index'
 
 import AgeInput from './AgeInput';
 import FunctionalitySelect from './FunctionalitySelect';
@@ -15,7 +13,7 @@ class SearchBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tableData:[{id:0,name:'asdasd'}],
+            tableData: [{ id: 0, name: 'Not Found!!', fromAge: 0, toAge: 0, functionality: 'Not Found!!', isability:''}],
             totalServices:0,
             modalDetails:{
                 defaultOpen:false,
@@ -44,7 +42,7 @@ class SearchBar extends Component {
                     defaultOpen: true,
                     service: service
                 }})                
-        }}>{service.description.slice(1,130).concat(' . . .')}</p>
+        }}>{service.description.slice(0,130).concat(' . . .')}</p>
         })
 
         this.setState({ tableData: newTableData,totalServices:newTableData.length})
