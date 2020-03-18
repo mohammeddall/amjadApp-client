@@ -13,7 +13,7 @@ class MyTable extends React.Component {
     this.state={
       size:20,
       page:1,
-      sorteBy:'',
+      sortBy:'',
       orderBy:''
     }
     
@@ -29,24 +29,34 @@ class MyTable extends React.Component {
   }
   componentDidUpdate(prevProps) {
     if (prevProps.data.tableData !== this.props.data.tableData) {
-      console.log('props changed')
-      this.setState({page:1})
+      this.setState({page:1,sortBy:'',orderBy:''})
     }
   }
-  tableToShow=()=>(
-    this.props.data.hasOwnProperty('pagination')?
-    this.props.data.tableData.slice((this.state.page-1 )* this.props.data.pagination, (this.state.page) * this.props.data.pagination)
-    :
-    this.props.data.tableData
-  )
-  tableHeader=(header,isSort,headerValue)=> {
+  tableToShow = (data)=>{
+    let dataToShow = this.sortData();
+    return(
+    data.hasOwnProperty('pagination')?
+      dataToShow.slice((this.state.page-1 )* data.pagination, (this.state.page) * data.pagination)
+      :
+      dataToShow
+    )}
+  tableHeader = (valueToShow,isSort,headerValue)=> {
   return (
     <th scope="col"
-    onClick={()=> this.props.sortOn(headerValue)}
+      onClick={() => 
+        isSort & typeof (this.props.sortOn) === "function"||this.props.localSort ?
+          this.state.sortBy==headerValue?
+            this.setState(() => ({ orderBy:this.state.orderBy=='asc'?'desc':'asc'}))
+            :
+            this.setState({ sortBy: headerValue == 'descriptionToShow' ? 'description' : headerValue, orderBy: 'asc'})
+          :
+          null
+      }
     > 
-      {capitalizeFirstLetter(header)}
+      {capitalizeFirstLetter(valueToShow)}
       {isSort&typeof (this.props.sortOn) === "function"?
       <FontAwesomeIcon
+        style={{ cursor: 'pointer' }}
         icon={faSort}
       ></FontAwesomeIcon>
       :
@@ -56,8 +66,18 @@ class MyTable extends React.Component {
   );
   }
 
-  sortData = (filter, order )=>{
-
+  sortData = ()=>{
+    return(
+    this.props.data.localSort?
+      this.localSort(this.props.data.tableData)
+      :
+      this.props.sortOn()
+  )}
+  
+  localSort=(data)=>{
+    const orderBy=this.state.orderBy=='asc'?1:-1
+    const sortedData = [...data].sort((a, b) => a[this.state.sortBy] > b[this.state.sortBy] ? orderBy : -orderBy)
+    return sortedData
   }
   render() {
 return (
@@ -91,7 +111,7 @@ return (
           </tr>
         </thead>
         <tbody>
-          {this.tableToShow(this.props.data.tableData).map(entries => (
+          {this.tableToShow(this.props.data).map(entries => (
             <tr style={{}} >
             {this.props.data.hasOwnProperty('tableHeader')?
               this.props.data.tableHeader.map(header=>
